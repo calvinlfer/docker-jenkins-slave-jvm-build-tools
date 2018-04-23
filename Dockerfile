@@ -17,7 +17,7 @@ RUN sbt sbtVersion \
 USER root
 
 #================
-# Maven (3.5.3)
+# Maven (3.3.9-3)
 #================
 
 ENV MAVEN_VERSION=3.3.9-3
