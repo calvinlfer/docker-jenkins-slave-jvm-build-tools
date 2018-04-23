@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ ! -z "$CACHE_BUCKET" ]
+then
+    start=$SECONDS
+
+    general_cache="$CACHE_BUCKET/cache"
+    cache_archive="cache.tar.gz"
+    cache_archive_path="$general_cache/$cache_archive"
+    echo "Fetching cache archive from s3://$cache_archive_path"
+
+    aws s3 cp "s3://$cache_archive_path" ~/
+    exit_code=$?
+
+    if [ ${exit_code} -ne 0 ]
+    then
+        echo "Fetching cache from S3"
+        aws s3 sync "s3://$general_cache" ~/
+        exit_code=$?
+        if [ ${exit_code} -ne 0 ]
+            then
+               echo "Failed to fetch cache folder from bucket"
+        fi
+    else
+        # extract archive
+        tar -xvzf ~/$cache_archive -C ~/ --strip 1
+    fi
+
+    if [ ${exit_code} -eq 0 ]
+    then
+        duration=$(( SECONDS - start ))
+        echo "Finished fetching cache from s3://$general_cache in $duration seconds"
+    fi
+fi
+
+exec "$@"
