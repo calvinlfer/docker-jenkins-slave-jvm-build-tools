@@ -31,7 +31,30 @@ ENV LEIN_ROOT=true
 RUN wget -q -O /usr/bin/lein \
         https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein \
         && chmod +x /usr/bin/lein
+
+USER jenkins
+
 RUN lein
+
+USER root
+
+#==========================
+# Scala Ammonite REPL + Shell for scripting
+#==========================
+# predef.sc to make REPL a usable system shell
+RUN mkdir -p ~/.ammonite && curl -L -o ~/.ammonite/predef.sc https://git.io/vHaKQ
+
+# download Ammonite (accessible via `amm`)
+RUN curl -L -o /usr/local/bin/amm https://github.com/lihaoyi/Ammonite/releases/download/1.1.0/2.12-1.1.0 && \
+    chmod +x /usr/local/bin/amm
+
+COPY initialize-amm.sc example.sc
+
+USER jenkins
+
+RUN amm example.sc && rm example.sc
+
+USER root
 
 #=============
 # Fetch caches

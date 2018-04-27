@@ -9,6 +9,7 @@ This is based on `freckleiot/docker-jenkins-slave`
 * Leiningen (latest stable) for Clojure
 * Node.JS (8.11.1 LTS)
 * Node packages to help you deploy your code to AWS ECS (`ecs-service`)
+* Ammonite to allow you to use Scala for scripting (includes Ammonite shell)
 
 ## Building Docker images ##
 To build Docker images with this slave, you must mount `/var/run/docker.sock` from your host to the same path in the container
