@@ -1,9 +1,9 @@
 FROM freckleiot/docker-jenkins-slave:1.0
 
 #==============
-# SBT (v1.1.4)
+# SBT (v1.1.6)
 #==============
-ENV SBT_VERSION=1.1.4
+ENV SBT_VERSION=1.1.6
 ENV SBT_HOME=/usr/local/sbt
 ENV PATH=${PATH}:${SBT_HOME}/bin
 
